@@ -4,9 +4,10 @@ nav{
 }
 nav ul{
   display: flex;
+  margin-left: 1000px;
   align-items: center;
   list-style: none;
-  gap: 24px;
+  gap: 50px;
   padding:0 8px ;
   height: 72px;
   font-size: medium;

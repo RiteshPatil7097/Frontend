@@ -6,8 +6,44 @@
 .top_btn {
     display: flex;
     gap: 32px;
+    margin-left: 95px;
 }
 
 .contact_form{
     gap: 24px;
+}
+ .form_control{
+    display: flex;
+    flex-direction: column;
+    width: 370px;
+    margin-left: 95px;
+    margin-top: 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    position: relative;
+ }
+
+ .form_control input{
+    height: 30px;
+    border-top:2px solid grey;
+    border-bottom: 2px solid black;
+    border-right: 2px solid black;
+ }
+ .form_control label{
+    position: relative;
+    top: 12px;
+    left: 5px;
+    border-radius: 2px;
+    padding: 0 10px;
+ }
+.form_control textarea{
+    border-top:2px solid grey;
+    border-left: 2px solid black;
+    border-bottom: 2px solid black;
+    border-right: 2px solid black;
+}
+.contact_image img{
+     height: 450px;
+     width: 450px;
 }
