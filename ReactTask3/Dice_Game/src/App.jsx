@@ -9,7 +9,7 @@ import GamePlay from './component/GamePlay'
 
 
 function App() {
-  const [isGameStarted, setGameStarted] = useState(1)
+  const [isGameStarted, setGameStarted] = useState(0)
   const toggleGamePlay=()=>{
      setGameStarted((prev) => !prev)
   }
