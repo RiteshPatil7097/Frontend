@@ -2,12 +2,34 @@ import { useState,useEffect } from 'react';
 import styled from 'styled-components'
 import SearchResult from './Component/SearchResult';
 
-const BASE_URL= "http://localhost:9000/"
+export const BASE_URL= "http://localhost:9000"
 
 const App = () => {
-  const [data,setData]=useState(null)
+  const [filteredData,setFilteredData]=useState([])
+  const [data,setData]=useState([])
   const [loading,setLoading]=useState(false)
   const [error,SetError]= useState("")
+  const [selectedBtn,setSelectedBTn]=useState("All")
+
+  const FilterFood= (type) =>{
+     if(!data) return;
+     if(type === "All"){
+        setFilteredData(data)
+        setSelectedBTn("All")
+        return;
+     }
+    const filter=data?.filter( (food)=>
+       food.type.toLowerCase().includes(type.toLowerCase()))
+      setFilteredData(filter)    
+      setSelectedBTn(type) 
+  }
+
+  const FilterBtn=[
+    {name:"All",type:"All"},
+    {name:"Breakfast",type:"Breakfast"},
+    {name:"Lunch",type:"Lunch"},
+    {name:"Dinner",type:"Dinner"}
+  ]
 
   useEffect(() => {
        const fetchFoodData= async() => {
@@ -16,7 +38,8 @@ const App = () => {
             const response= await fetch(BASE_URL)
             const json=await response.json();
             setLoading(false)
-            setData(json)
+            setData(json);
+            setFilteredData(json)
           }
           catch(error){
             SetError("Unable to fetch the data")
@@ -25,53 +48,60 @@ const App = () => {
        fetchFoodData() 
   },[])
 
+const SearchFood=(e) =>{
+    const searchValue=e.target.value
+    console.log(searchValue)
+    if(searchValue === ""){
+       setFilteredData(data)
+    }
+    const filter=data?.filter( (food)=> food.name.toLowerCase().includes(searchValue.toLowerCase()))
+    setFilteredData(filter)
+}
 
-  const temp={
-    "name": "Boilded Egg",
-    "price": 10,
-    "text": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.",
-    "image": "/images/egg.png",
-    "type": "breakfast"
-  }
-
-  console.log(data);
+  console.log(filteredData);
   if(error) return <div>{error}</div>
   if(loading) return <div>loading...</div>
 
   return (
+    <>
   <Container>
      <TopBar>
         <div className="logo">
           <img src='Foody Zone.svg' alt='Logo'/>
         </div>
         <div className='search'>
-          <input placeholder='Search Food....'></input>
+          <input onChange={SearchFood} placeholder='Search Food....'></input>
         </div>
      </TopBar>
      <FilterContainer>
-        <Button>All</Button>
-        <Button>Breakfast</Button>
-        <Button>Lunch</Button>
-        <Button>Dinner</Button>
+        {FilterBtn?.map( (value)=>
+            <Button 
+                isSelected={selectedBtn=== value.type}
+                key={value.name} 
+                onClick={() => FilterFood(value.type)}>
+              {value.type}
+            </Button>
+        )}
      </FilterContainer>
-    <SearchResult data={data}/>
-
   </Container> 
+  <SearchResult data={filteredData}/>
+   </>
   )
 };
 
 export default App;
 
-const Container=styled.div`
+export const Container=styled.div`
   /* max-width: 200px; */
   margin: 0 auto;
 `
 const TopBar=styled.div`
-    min-height: 140px;
+    height: 140px;
     display: flex;
     justify-content: space-between;
     padding: 16px;
     align-items: center;
+
     .search{
         input{
            background-color: #323334;
@@ -83,7 +113,15 @@ const TopBar=styled.div`
            font-size: 16px;
            font-weight: 400;
            padding: 0 10px;
+          &::placeholder{
+             color: white;
+          }
         }
+    }
+    @media (max-width:600px){
+       flex-direction: column;
+       height: 120px;
+       /* background-color: yellow; */
     }
 `
 
@@ -93,9 +131,10 @@ const FilterContainer=styled.section`
        gap:24px;
        margin-bottom: 20px;
 `
-const Button=styled.section`
-  background: red;
+export const Button=styled.section`
+  background: ${({isSelected}) => (isSelected ? "#e04141":"#f50909")};
+  outline:1px solid ${({isSelected}) => (isSelected ? "white":"#f50909")};
   border-radius: 5px;
   padding: 6px 12px; 
+  cursor: pointer;
 `
-
