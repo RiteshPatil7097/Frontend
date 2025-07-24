@@ -6,6 +6,8 @@ export default defineConfig({
   plugins: [react()],
   preview: {
     port: process.env.PORT || 4173,
-    host: true
+    host: true,
+    allowedHosts: ['foody-zone-khrt.onrender.com'],
+
   }
 })
