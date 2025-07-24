@@ -2,7 +2,8 @@ import { useState,useEffect } from 'react';
 import styled from 'styled-components'
 import SearchResult from './Component/SearchResult';
 
-export const BASE_URL= "http://localhost:9000"
+export const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 
 const App = () => {
   const [filteredData,setFilteredData]=useState([])
@@ -35,7 +36,7 @@ const App = () => {
        const fetchFoodData= async() => {
           setLoading(true)
           try{
-            const response= await fetch(BASE_URL)
+            const response = await fetch(`${BASE_URL}/`);
             const json=await response.json();
             setLoading(false)
             setData(json);
